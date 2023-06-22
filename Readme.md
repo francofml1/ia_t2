@@ -12,7 +12,9 @@ Métodos implementados:
 - Também são definidosos parâmetros que devem ser usados pelos métodos;
 - Executar cada algoritmo no mínimo 10 vezes (talvez 30)
 - [Implemenrtação do HC-C para o TSP](https://colab.research.google.com/drive/1Gnhhp0GX8140lAYv-uCg2qnR6E92gutX?usp=sharing)
+- [Implementação do GA para o problema das 8 rainhas](https://colab.research.google.com/drive/1N6lVlrffNY3Gy_yDupReT50MRZfVHGqt?usp=sharing)
 - [Implementação do SA para o TSP](https://colab.research.google.com/drive/1MS0-4QF76dfQrulwdOqIkJPNi8U5SHdG?usp=sharing)
+- [notebook_IA_cap4_SimulatedAnnealing](https://colab.research.google.com/drive/173NM-mgBzf8ptPzXUFnuD8JjwHNKBPCF?usp=sharing)
 
 ---
 # Referências:
