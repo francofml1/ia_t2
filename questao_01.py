@@ -14,7 +14,7 @@ import random
 
 # Geração de gráficos
 import matplotlib.pyplot as plt
-import seaborn as sns
+# import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -273,7 +273,7 @@ def gera_coordenadas_aleatorias(n_cidades: int):
     return df_cidades
 
 
-def gera_problema_tsp(df_cidades: list):
+def gera_problema_tsp(df_cidades):
     """Recebe uma lista com as coordenadas reais de uma cidade e
     gera uma matriz de distancias entre as cidades.
     Obs: a matriz é simetrica e com diagonal nula
@@ -377,26 +377,20 @@ def boxplot_sorted(df, rot=90, figsize=(12, 6), fontsize=20):
     )
 
     axes.set_title("Cost of Algorithms", fontsize=fontsize)
+    plt.show()
 
 
 """## Execução"""
 
 
-def run_once():
+def run_once(n_cidades, df_coordenadas, tsp):
     """Executa 1 vez"""
 
     # Simula a criação de N cidades
     # com suas respectivas distâncias
 
-    n_cidades = 10
-    df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
-    df_coordenadas
-
-    tsp = gera_problema_tsp(df_coordenadas)
-    tsp
-
     solucao = ["A" + str(i) for i in range(n_cidades)]
-    solucao
+    print(solucao)
     plota_rotas(df_coordenadas, solucao)
 
     solucao = solucao_aleatoria(tsp)
@@ -461,32 +455,19 @@ def executa_n_vezes(tsp, algoritmos, n_vezes):
     return df_custo
 
 
-def run_n_times_dataframe():
+def run_n_times_dataframe(tsp, algoritmos, n_vezes):
     """
     ### Executa N vezes - ESTRUTURADA com DataFrame
 
-    A seguir, é apresentada uma forma mais estruturada de se rodar várias vezes usando a estrutura de dados **`DataFrame`** para armazenar os resultados e permitir visualização de box-plots
+    A seguir, é apresentada uma forma mais estruturada de se rodar várias vezes 
+    usando a estrutura de dados **`DataFrame`** para armazenar os resultados e 
+    permitir visualização de box-plots
     """
 
-    # Dicionario com Nomes dos modelos e suas respectivas variantes
-    # Tuple: (Algoritmo, Variante): funcao_algoritmo
-    algoritmos = {"Random Walk": random_walk, "Hill-Climbing": hill_climbing}
-
+   
     """#### PROBLEMA GERADO ALEATORIAMENTE"""
 
-    ###################################
-    # PROBLEMA GERADO ALEATORIAMENTE  #
-    ###################################
-
-    # cria instancia do problema com n cidades
-
-    n_cidades = 10
-    df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
-
-    tsp = gera_problema_tsp(df_coordenadas)
-
-    # numero de vezes que executará cada algoritmo
-    n_vezes = 100
+   
 
     # Executa N vezes para gerar estatísticas da variável custo
     df_custo = executa_n_vezes(tsp, algoritmos, n_vezes)
@@ -500,7 +481,7 @@ def run_n_times_dataframe():
     Como você justifica isso?
     """
 
-    df_custo.T.describe()
+    print(df_custo.T.describe())
 
     """---
 
@@ -702,3 +683,52 @@ def run_all(df_coordenadas):
     boxplot_sorted(df_custo, rot=90, figsize=(12, 6), fontsize=20)
 
     df_custo.T.describe()
+
+
+def main():
+    modo = 3
+    
+    if modo == 1:
+        n_cidades = 10
+        df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
+
+        tsp = gera_problema_tsp(df_coordenadas)
+        
+        # executa uma vez
+        run_once(n_cidades, df_coordenadas, tsp)
+    elif modo == 2:
+        n_cidades = 10
+        df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
+
+        tsp = gera_problema_tsp(df_coordenadas)
+        # executa várias (30) vezes simples
+        run_n_times(tsp)
+    elif modo == 3:
+        # ## executa n vezes:
+        
+        # Dicionario com Nomes dos modelos e suas respectivas variantes
+        # Tuple: (Algoritmo, Variante): funcao_algoritmo
+        algoritmos = {"Random Walk": random_walk, "Hill-Climbing": hill_climbing}
+
+        ###################################
+        # PROBLEMA GERADO ALEATORIAMENTE  #
+        ###################################
+
+        # cria instancia do problema com n cidades
+
+        n_cidades = 10
+        df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
+
+        tsp = gera_problema_tsp(df_coordenadas)
+
+        # numero de vezes que executará cada algoritmo
+        n_vezes = 100
+        
+        run_n_times_dataframe(tsp, algoritmos, n_vezes)
+
+    
+    print("Finalizado! Pressione Enter pra finalizar...")
+    input()
+
+if __name__ == "__main__":
+    main()
