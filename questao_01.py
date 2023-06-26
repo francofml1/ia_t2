@@ -14,6 +14,7 @@ import random
 
 # Geração de gráficos
 import matplotlib.pyplot as plt
+
 # import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
@@ -316,14 +317,17 @@ def gera_problema_tsp(df_cidades):
 
 #     plt.show()
 
+
 def show(fig):
     import io
     import plotly.io as pio
     from PIL import Image
+
     buf = io.BytesIO()
     pio.write_image(fig, buf)
     img = Image.open(buf)
     img.show()
+
 
 def plota_rotas(df_cidades, ordem_cidades):
     """Plota a solução do roteamento das cidades
@@ -476,15 +480,12 @@ def run_n_times_dataframe(tsp, algoritmos, n_vezes):
     """
     ### Executa N vezes - ESTRUTURADA com DataFrame
 
-    A seguir, é apresentada uma forma mais estruturada de se rodar várias vezes 
-    usando a estrutura de dados **`DataFrame`** para armazenar os resultados e 
+    A seguir, é apresentada uma forma mais estruturada de se rodar várias vezes
+    usando a estrutura de dados **`DataFrame`** para armazenar os resultados e
     permitir visualização de box-plots
     """
 
-   
     """#### PROBLEMA GERADO ALEATORIAMENTE"""
-
-   
 
     # Executa N vezes para gerar estatísticas da variável custo
     df_custo = executa_n_vezes(tsp, algoritmos, n_vezes)
@@ -512,12 +513,72 @@ def real_problem(algoritmos, tsp, n_vezes, df_coordenadas):
     # Melhor solucao encontrada
     # 28340.563  [1, 2, 6, 5, 4, 3, 7, 9, 8, 13, 14, 16, 24, 27, 25, 20, 26, 28, 29, 23, 22, 21, 17, 18, 19, 15, 12, 10, 11]
 
-    solucao = [ 1, 2, 6, 5, 4, 3, 7, 9, 8, 13, 14, 16, 24, 27, 25, 20, 26, 28, 29, 23, 22, 21, 17, 18, 19, 15, 12, 10, 11, ]
+    solucao = [
+        1,
+        2,
+        6,
+        5,
+        4,
+        3,
+        7,
+        9,
+        8,
+        13,
+        14,
+        16,
+        24,
+        27,
+        25,
+        20,
+        26,
+        28,
+        29,
+        23,
+        22,
+        21,
+        17,
+        18,
+        19,
+        15,
+        12,
+        10,
+        11,
+    ]
 
     plota_rotas(df_coordenadas, solucao)
 
     # Solucao otima
-    solucao = [1,6,10,11,12,15,19,18,17,21,22,23,29,28,26,20,25,27,24,16,14,13,9,7,3,4,8,5,2,]
+    solucao = [
+        1,
+        6,
+        10,
+        11,
+        12,
+        15,
+        19,
+        18,
+        17,
+        21,
+        22,
+        23,
+        29,
+        28,
+        26,
+        20,
+        25,
+        27,
+        24,
+        16,
+        14,
+        13,
+        9,
+        7,
+        3,
+        4,
+        8,
+        5,
+        2,
+    ]
 
     plota_rotas(df_coordenadas, solucao)
 
@@ -552,14 +613,14 @@ def run_all():
     url_coordenadas_cidade = "https://www.math.uwaterloo.ca/tsp/world/wi29.tsp"
 
     df_coordenadas = pd.read_table(
-            url_coordenadas_cidade,
-            skiprows=7,  # ignora as 7 primeiras linhas com informações
-            names=["X", "Y"],  # nomes das colunas
-            sep=" ",  # separador das colunas
-            index_col=0,  # usar col=0 como index (nome das cidades)
-            skipfooter=1,  # ignora a última linha (EOF)
-            engine="python",  # para o parser usar skipfooter sem warning
-        )
+        url_coordenadas_cidade,
+        skiprows=7,  # ignora as 7 primeiras linhas com informações
+        names=["X", "Y"],  # nomes das colunas
+        sep=" ",  # separador das colunas
+        index_col=0,  # usar col=0 como index (nome das cidades)
+        skipfooter=1,  # ignora a última linha (EOF)
+        engine="python",  # para o parser usar skipfooter sem warning
+    )
 
     algoritmos = {
         #'Random Walk - classic': solucao_aleatoria,
@@ -585,17 +646,16 @@ def run_all():
 
 
 def main():
-    modo = 5
-    
+    modo = 1
+
     if modo == 1:
         n_cidades = 10
         df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
 
         tsp = gera_problema_tsp(df_coordenadas)
-        
+
         # executa uma vez
         run_once(n_cidades, df_coordenadas, tsp)
-    
     elif modo == 2:
         n_cidades = 10
         df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
@@ -605,7 +665,7 @@ def main():
         run_n_times(tsp)
     elif modo == 3:
         # ## executa n vezes:
-        
+
         # Dicionario com Nomes dos modelos e suas respectivas variantes
         # Tuple: (Algoritmo, Variante): funcao_algoritmo
         algoritmos = {"Random Walk": random_walk, "Hill-Climbing": hill_climbing}
@@ -623,9 +683,9 @@ def main():
 
         # numero de vezes que executará cada algoritmo
         n_vezes = 100
-        
+
         run_n_times_dataframe(tsp, algoritmos, n_vezes)
-    elif modo ==4:
+    elif modo == 4:
         """---
         #### PROBLEMAS REAIS
 
@@ -695,14 +755,14 @@ def main():
         # Dicionario com Nomes dos modelos e suas respectivas variantes
         # Tuple: (Algoritmo, Variante): funcao_algoritmo
         algoritmos = {"Random Walk": random_walk, "Hill-Climbing": hill_climbing}
-        
+
         real_problem(algoritmos, tsp, n_vezes, df_coordenadas)
     elif modo == 5:
         run_all()
 
-    
     print("Finalizado! Pressione Enter pra finalizar...")
     input()
+
 
 if __name__ == "__main__":
     main()
