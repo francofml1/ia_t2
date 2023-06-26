@@ -483,78 +483,8 @@ def run_n_times_dataframe(tsp, algoritmos, n_vezes):
 
     print(df_custo.T.describe())
 
-    """---
 
-#### PROBLEMAS REAIS
-
-A seguir, são apresentados alguns links de problemas reais.
-
-Basta escolher um link de **`download de dados`**, setar a variável URL abaixo, e rodar o algoritmo.
-
-Western Sahara
-    29 cidades
-    The optimal tour has length 27.603
-    Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/wipoints.html
-    Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/witour.html
-    Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/wi29.tsp
-
-    Djibouti dataset
-    38 cidades
-    The optimal tour has length 6.656
-    Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/djpoints.html
-    Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/djtour.html
-    Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/dj38.tsp
-
-    Qatar
-    194 cidades
-    The optimal tour has length 9.352
-    Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/qapoints.html
-    Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/qatour.html
-    Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/qa194.tsp
-
-    Uruguay
-    734 cidades
-    The optimal tour has length 79.114
-    Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/uypoints.html
-    Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/uytour.html
-    Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/uy734.tsp
-"""
-
-
-def real_problem(algoritmos):
-    url_coordenadas_cidade = "https://www.math.uwaterloo.ca/tsp/world/wi29.tsp"
-
-    df_coordenadas = pd.read_table(
-        url_coordenadas_cidade,
-        skiprows=7,  # ignora as 7 primeiras linhas com informações
-        names=["X", "Y"],  # nomes das colunas
-        sep=" ",  # separador das colunas
-        index_col=0,  # usar col=0 como index (nome das cidades)
-        skipfooter=1,  # ignora a última linha (EOF)
-        engine="python",  # para o parser usar skipfooter sem warning
-    )
-
-    # descomente a linha abaixo para conferir se os dados foram lidos corretamente
-
-    df_coordenadas
-
-    tsp = gera_problema_tsp(df_coordenadas)
-
-    # solucao, custo = random_walk(tsp)
-    custo, solucao = hill_climbing(tsp)
-    print(f"{custo:7.3f}, {solucao}")
-    plota_rotas(df_coordenadas, solucao)
-
-    ###################################
-    # PROBLEMA REAL #
-    ###################################
-
-    tsp = gera_problema_tsp(df_coordenadas)
-
-    # tsp
-
-    n_vezes = 30
-
+def real_problem(algoritmos, tsp, n_vezes, df_coordenadas):
     # Executa N vezes para gerar estatísticas da variável custo
     df_custo = executa_n_vezes(tsp, algoritmos, n_vezes)
 
@@ -565,72 +495,12 @@ def real_problem(algoritmos):
     # Melhor solucao encontrada
     # 28340.563  [1, 2, 6, 5, 4, 3, 7, 9, 8, 13, 14, 16, 24, 27, 25, 20, 26, 28, 29, 23, 22, 21, 17, 18, 19, 15, 12, 10, 11]
 
-    solucao = [
-        1,
-        2,
-        6,
-        5,
-        4,
-        3,
-        7,
-        9,
-        8,
-        13,
-        14,
-        16,
-        24,
-        27,
-        25,
-        20,
-        26,
-        28,
-        29,
-        23,
-        22,
-        21,
-        17,
-        18,
-        19,
-        15,
-        12,
-        10,
-        11,
-    ]
+    solucao = [ 1, 2, 6, 5, 4, 3, 7, 9, 8, 13, 14, 16, 24, 27, 25, 20, 26, 28, 29, 23, 22, 21, 17, 18, 19, 15, 12, 10, 11, ]
 
     plota_rotas(df_coordenadas, solucao)
 
     # Solucao otima
-    solucao = [
-        1,
-        6,
-        10,
-        11,
-        12,
-        15,
-        19,
-        18,
-        17,
-        21,
-        22,
-        23,
-        29,
-        28,
-        26,
-        20,
-        25,
-        27,
-        24,
-        16,
-        14,
-        13,
-        9,
-        7,
-        3,
-        4,
-        8,
-        5,
-        2,
-    ]
+    solucao = [1,6,10,11,12,15,19,18,17,21,22,23,29,28,26,20,25,27,24,16,14,13,9,7,3,4,8,5,2,]
 
     plota_rotas(df_coordenadas, solucao)
 
@@ -659,8 +529,20 @@ def hill_climbing_randomrestart(tsp):
     # ponha seu código aqui
 
 
-def run_all(df_coordenadas):
-    # Para rodar tudo junto:
+def run_all():
+    """Para rodar tudo junto"""
+
+    url_coordenadas_cidade = "https://www.math.uwaterloo.ca/tsp/world/wi29.tsp"
+
+    df_coordenadas = pd.read_table(
+            url_coordenadas_cidade,
+            skiprows=7,  # ignora as 7 primeiras linhas com informações
+            names=["X", "Y"],  # nomes das colunas
+            sep=" ",  # separador das colunas
+            index_col=0,  # usar col=0 como index (nome das cidades)
+            skipfooter=1,  # ignora a última linha (EOF)
+            engine="python",  # para o parser usar skipfooter sem warning
+        )
 
     algoritmos = {
         #'Random Walk - classic': solucao_aleatoria,
@@ -686,7 +568,7 @@ def run_all(df_coordenadas):
 
 
 def main():
-    modo = 3
+    modo = 5
     
     if modo == 1:
         n_cidades = 10
@@ -696,6 +578,7 @@ def main():
         
         # executa uma vez
         run_once(n_cidades, df_coordenadas, tsp)
+    
     elif modo == 2:
         n_cidades = 10
         df_coordenadas = gera_coordenadas_aleatorias(n_cidades)
@@ -725,6 +608,80 @@ def main():
         n_vezes = 100
         
         run_n_times_dataframe(tsp, algoritmos, n_vezes)
+    elif modo ==4:
+        """---
+        #### PROBLEMAS REAIS
+
+        A seguir, são apresentados alguns links de problemas reais.
+
+        Basta escolher um link de **`download de dados`**, setar a variável URL abaixo, e rodar o algoritmo.
+
+        Western Sahara
+            29 cidades
+            The optimal tour has length 27.603
+            Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/wipoints.html
+            Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/witour.html
+            Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/wi29.tsp
+
+            Djibouti dataset
+            38 cidades
+            The optimal tour has length 6.656
+            Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/djpoints.html
+            Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/djtour.html
+            Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/dj38.tsp
+
+            Qatar
+            194 cidades
+            The optimal tour has length 9.352
+            Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/qapoints.html
+            Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/qatour.html
+            Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/qa194.tsp
+
+            Uruguay
+            734 cidades
+            The optimal tour has length 79.114
+            Foto dos Pontos: http://www.math.uwaterloo.ca/tsp/world/uypoints.html
+            Foto da Solução: http://www.math.uwaterloo.ca/tsp/world/uytour.html
+            Download dos Dados: http://www.math.uwaterloo.ca/tsp/world/uy734.tsp
+        """
+        url_coordenadas_cidade = "https://www.math.uwaterloo.ca/tsp/world/wi29.tsp"
+
+        df_coordenadas = pd.read_table(
+            url_coordenadas_cidade,
+            skiprows=7,  # ignora as 7 primeiras linhas com informações
+            names=["X", "Y"],  # nomes das colunas
+            sep=" ",  # separador das colunas
+            index_col=0,  # usar col=0 como index (nome das cidades)
+            skipfooter=1,  # ignora a última linha (EOF)
+            engine="python",  # para o parser usar skipfooter sem warning
+        )
+
+        # descomente a linha abaixo para conferir se os dados foram lidos corretamente
+
+        print(df_coordenadas)
+
+        tsp = gera_problema_tsp(df_coordenadas)
+
+        # solucao, custo = random_walk(tsp)
+        custo, solucao = hill_climbing(tsp)
+        print(f"{custo:7.3f}, {solucao}")
+        plota_rotas(df_coordenadas, solucao)
+
+        ###################################
+        # PROBLEMA REAL #
+        ###################################
+
+        tsp = gera_problema_tsp(df_coordenadas)
+
+        n_vezes = 30
+
+        # Dicionario com Nomes dos modelos e suas respectivas variantes
+        # Tuple: (Algoritmo, Variante): funcao_algoritmo
+        algoritmos = {"Random Walk": random_walk, "Hill-Climbing": hill_climbing}
+        
+        real_problem(algoritmos, tsp, n_vezes, df_coordenadas)
+    elif modo == 5:
+        run_all()
 
     
     print("Finalizado! Pressione Enter pra finalizar...")
