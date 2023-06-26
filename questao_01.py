@@ -316,6 +316,14 @@ def gera_problema_tsp(df_cidades):
 
 #     plt.show()
 
+def show(fig):
+    import io
+    import plotly.io as pio
+    from PIL import Image
+    buf = io.BytesIO()
+    pio.write_image(fig, buf)
+    img = Image.open(buf)
+    img.show()
 
 def plota_rotas(df_cidades, ordem_cidades):
     """Plota a solução do roteamento das cidades
