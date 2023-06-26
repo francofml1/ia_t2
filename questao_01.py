@@ -339,7 +339,7 @@ def plota_rotas(df_cidades, ordem_cidades):
     # cria objeto gráfico
     fig = go.Figure()
 
-    fig.update_layout(autosize=False, width=500, height=500, showlegend=False)
+    fig.update_layout(autosize=False, width=1080, height=1080, showlegend=False)
 
     # gera linhas com as rotas da primeira ate a ultima cidade
     fig.add_trace(
@@ -358,7 +358,16 @@ def plota_rotas(df_cidades, ordem_cidades):
         go.Scatter(x=X.iloc[[-1, 0]], y=Y.iloc[[-1, 0]], mode="lines+markers", name="")
     )
 
+    fig.update_layout(
+        font=dict(
+            # family="Courier New, monospace",
+            size=30,  # Set the font size here
+            # color="RebeccaPurple",
+        )
+    )
+
     fig.show()
+    # show(fig)
 
 
 """### Boxplots"""
